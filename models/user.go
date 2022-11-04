@@ -13,8 +13,10 @@ import (
 
 type User struct {
 	gorm.Model
-	Username string `gorm:"size:255;not null;unique" json:"username"`
-	Password string `gorm:"size:255;not null;" json:"password"`
+	Username     string `gorm:"size:255;not null;unique" json:"username"`
+	Email        string `gorm:"size:255;not null;unique" json:"email"`
+	Mobilenumber string `gorm:"size:255;not null;unique" json:"mobilnumber"`
+	Password     string `gorm:"size:255;not null;" json:"password"`
 }
 
 func GetUserByID(uid uint) (User, error) {
@@ -77,6 +79,30 @@ func (u *User) SaveUser() (*User, error) {
 		return &User{}, err
 	}
 	return u, nil
+}
+
+func (u *User) UpdateUserData() (*User, error) {
+
+	fmt.Println(u)
+
+	err := DB.Model(&User{}).Updates(u).Error
+
+	if err != nil {
+		return &User{}, err
+	}
+
+	return &User{}, nil
+}
+
+func (u *User) DeleteUserD() error {
+
+	err := DB.Model(&User{}).Delete(u).Error
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (u *User) BeforeSave() error {

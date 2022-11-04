@@ -25,8 +25,11 @@ func main() {
 	public.POST("/login", controllers.Login)
 
 	protected := r.Group("/api/admin")
+	protectedUser := r.Group("/api/user")
 	protected.Use(middlewares.JwtAuthMiddleware())
 	protected.GET("/user", controllers.CurrentUser)
+	protectedUser.POST("/update", controllers.UpdateUser)
+	protectedUser.DELETE("/delete", controllers.DeleteUser)
 
 	r.Run(":8080")
 
